@@ -1,13 +1,12 @@
+logs
+*.logs
+
 node_modules
 dist
 dist-ssr
 *.local
 
 .vscode/*
+.idea
 .DS_Store
 *.suo
-*.ntvs
-
-*.log
-logs
-npm-debug.log*
