@@ -2,7 +2,7 @@ import { Text, View, ScrollView } from "react-native";
 
 import { generateDatesFromYearBeginning } from '../utils/generate-dates-from-year-beginning'
 
-import { DAY_SIZE, HabitDay } from "../components/HabitDeys";
+import { DAY_SIZE, HabitDay } from "../components/HabitDays";
 import { Header } from "../components/Header";
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
