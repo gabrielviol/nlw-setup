@@ -99,11 +99,29 @@ export async function appRoutes(app: FastifyInstance) {
                 }
             })
         }
-        await prisma.dayHabit.create({
-            data: {
-                day_id: day.id,
-                habit_id: id,
+
+        const dayHabit = await prisma.dayHabit.findUnique({
+            where: {
+                day_id_habit_id: {
+                    day_id: day.id,
+                    habit_id: id,
+                }
             }
         })
+
+        if(dayHabit){
+            // Remover a marcação de completo
+        } else {
+            // Completar o habito
+            await prisma.dayHabit.create({
+                data: {
+                    day_id: day.id,
+                    habit_id: id,
+                }
+            })
+        }
+
+        
+        
     })
 }
