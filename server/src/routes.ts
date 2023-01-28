@@ -129,4 +129,8 @@ export async function appRoutes(app: FastifyInstance) {
         
         
     })
+
+    app.get('/summary', async () => {
+        // [ { date: 28/01, amountPossible: 5, completed: 1 }, {}, {} ]
+    })
 }
