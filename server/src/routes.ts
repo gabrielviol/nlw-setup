@@ -75,7 +75,7 @@ export async function appRoutes(app: FastifyInstance) {
         }
     })
 
-    app.patch('/habits/:id/tooggle', async (request) => {
+    app.patch('/habits/:id/toggle', async (request) => {
         // route param => parametro de identificação
 
         const toggleHabitParams = z.object({
@@ -111,6 +111,11 @@ export async function appRoutes(app: FastifyInstance) {
 
         if(dayHabit){
             // Remover a marcação de completo
+            await prisma.dayHabit.delete({
+                where: {
+                    id: dayHabit.id,
+                }
+            })
         } else {
             // Completar o habito
             await prisma.dayHabit.create({
