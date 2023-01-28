@@ -11,7 +11,7 @@ export async function appRoutes(app: FastifyInstance) {
                 z.number().min(0).max(6)
             )
         })
-        
+
         const { title, weekDays } = createHabitBody.parse(request.body)
 
         const today = dayjs().startOf('day').toDate()
@@ -25,7 +25,7 @@ export async function appRoutes(app: FastifyInstance) {
                 weekDays: {
                     create: weekDays.map(weekDay => {
                         return {
-                            week_day: weekDay, 
+                            week_day: weekDay,
                         }
                     })
                 }
@@ -73,5 +73,37 @@ export async function appRoutes(app: FastifyInstance) {
             possibleHabits,
             completedHabits
         }
+    })
+
+    app.patch('/habits/:id/tooggle', async (request) => {
+        // route param => parametro de identificação
+
+        const toggleHabitParams = z.object({
+            id: z.string().uuid(),
+        })
+
+        const { id } = toggleHabitParams.parse(request.params)
+
+        const today = dayjs().startOf('day').toDate()
+
+        let day = await prisma.day.findUnique({
+            where: {
+                date: today,
+            }
+        })
+
+        if (!day) {
+            day = await prisma.day.create({
+                data: {
+                    date: today,
+                }
+            })
+        }
+        await prisma.dayHabit.create({
+            data: {
+                day_id: day.id,
+                habit_id: id,
+            }
+        })
     })
 }
