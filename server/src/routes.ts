@@ -132,5 +132,23 @@ export async function appRoutes(app: FastifyInstance) {
 
     app.get('/summary', async () => {
         // [ { date: 28/01, amountPossible: 5, completed: 1 }, {}, {} ]
+        // Query mais complexa, mais condições, relacionamentos => SQL na mão(RAW)
+        // Prisma ORM: RAW SQL => SQLite
+
+        const summary = await prisma.$queryRaw`
+            SELECT 
+                D.id,  
+                D.date,
+                (
+                    SELECT 
+                        cast(count(*) as float)
+                    FROM day_habit DH
+                    WHERE DH.day_id = D.id
+                ) as completed
+                
+            FROM days D
+        `
+
+        return summary
     })
 }
