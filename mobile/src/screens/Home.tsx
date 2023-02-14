@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Text, View, ScrollView, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { api } from '../lib/axios'
 import { generateDatesFromYearBeginning } from '../utils/generate-dates-from-year-beginning'
@@ -31,7 +31,7 @@ export function Home() {
     async function fetchData(){
         try {
             setLoading(true)
-            const response = await api.get('summary')
+            const response = await api.get('/summary')
             console.log(response.data)
             setSummary(response.data)
         } catch(error){
@@ -42,15 +42,15 @@ export function Home() {
         }
     }
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchData();
-    }, []);
+    }, []));
 
-    // if(loading){
-    //     return(
-    //         <Loading />
-    //     )
-    // }
+    if(loading){
+        return(
+            <Loading />
+        )
+    }
 
     return (
         <View className="flex-1 bg-background px-8 pt-16">

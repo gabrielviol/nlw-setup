@@ -1,8 +1,9 @@
 import { Alert, ScrollView, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import dayjs from "dayjs";
+import clsx from "clsx";
 
-import {generateProgressPercentage} from '../utils/generate-progress-percentage'
+import { generateProgressPercentage } from '../utils/generate-progress-percentage'
 
 import { BackButton } from "../components/BackButton";
 import { ProgressBar } from "../components/ProgressBar";
@@ -11,7 +12,6 @@ import { useEffect, useState } from "react";
 import { Loading } from "../components/Loading";
 import { api } from "../lib/axios";
 import { HabitEmpty } from "../components/HabitsEmpty";
-import clsx from "clsx";
 
 interface Params {
     date: string
@@ -56,11 +56,20 @@ export function Habit() {
     }
 
     async function handleToggleHabit(habitId: string) {
-        if (completedHabits.includes(habitId)) {
-            setCompletedHabits(prevState => prevState.filter(habit => habit !== habitId))
-        } else {
-            setCompletedHabits(prevState => [...prevState, habitId])
+        try {
+            await api.patch(`/habits/${habitId}/toggle`)
+
+            if (completedHabits.includes(habitId)) {
+                setCompletedHabits(prevState => prevState.filter(habit => habit !== habitId))
+            } else {
+                setCompletedHabits(prevState => [...prevState, habitId])
+            }
+
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Ops', 'Não foi possível atualizar o status do hábito');
         }
+
     }
 
     useEffect(() => {
@@ -103,9 +112,9 @@ export function Habit() {
                                 disabled={isDateInPast}
                                 onPress={() => handleToggleHabit(habit.id)}
                             />
-                        )) 
-                        :
-                        <HabitEmpty />
+                        ))
+                            :
+                            <HabitEmpty />
 
                     }
                 </View>
@@ -113,7 +122,7 @@ export function Habit() {
                 {
                     isDateInPast && (
                         <Text className="text-white mt-10 text-center">
-                            Você não pode editar um hábitos de uma passada. 
+                            Você não pode editar um hábitos de uma passada.
                         </Text>
                     )
                 }
