@@ -10,6 +10,7 @@ import { CheckBox } from "../components/CheckBox";
 import { useEffect, useState } from "react";
 import { Loading } from "../components/Loading";
 import { api } from "../lib/axios";
+import { HabitEmpty } from "../components/HabitsEmpty";
 
 interface Params {
     date: string
@@ -90,14 +91,16 @@ export function Habit() {
 
                 <View className="mt-6">
                     {
-                        dayInfo?.possibleHabits && dayInfo?.possibleHabits.map(habit => (
+                        dayInfo?.possibleHabits ? dayInfo?.possibleHabits.map(habit => (
                             <CheckBox
                                 key={habit.id}
                                 title={habit.title}
                                 checked={completedHabits.includes(habit.id)}
                                 onPress={() => handleToggleHabit(habit.id)}
                             />
-                        ))
+                        )) 
+                        :
+                        <HabitEmpty />
 
                     }
                 </View>
