@@ -21,7 +21,7 @@ export function HabitDay({ defaultCompleted = 0, amount = 0, date }: HabitDayPro
     const dayAndMonth = dayjs(date).format('DD/MM')
     const dayOfWeek = dayjs(date).format('dddd')
 
-    function handleCompletedChanged(completed: number){
+    function handleCompletedChanged(completed: number) {
         setCompleted(completed)
     }
 
@@ -45,9 +45,9 @@ export function HabitDay({ defaultCompleted = 0, amount = 0, date }: HabitDayPro
                     <span className='font-semibold text-zinc-400'>{dayOfWeek}</span>
                     <span className='mt-1 font-extrabold leading-tight text-3xl'>{dayAndMonth}</span>
 
-                    <ProgressBar progress={completedPercentage}/>
+                    <ProgressBar progress={completedPercentage} />
 
-                    <HabitsList date={date} onCompletedChanged={handleCompletedChanged}/>
+                    <HabitsList date={date} onCompletedChanged={handleCompletedChanged} />
 
                     <Popover.Arrow height={8} width={16} className='fill-zinc-900' />
                 </Popover.Content>

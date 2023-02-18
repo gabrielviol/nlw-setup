@@ -31,14 +31,14 @@ export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
         })
     }, [])
 
-    async function handleToggleHabit(habitId : string){
+    async function handleToggleHabit(habitId: string) {
         await api.patch(`habits/${habitId}/toggle`)
 
         const isHabitAlreadyCompleted = habitsInfo!.completedHabits.includes(habitId)
 
         let completedHabits: string[] = []
 
-        if(isHabitAlreadyCompleted){
+        if (isHabitAlreadyCompleted) {
             //remover da lista
             completedHabits = habitsInfo!.completedHabits.filter(id => id !== habitId)
         } else {
