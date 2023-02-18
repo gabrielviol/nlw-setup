@@ -28,16 +28,16 @@ export function Home() {
 
     const { navigate } = useNavigation();
 
-    async function fetchData(){
+    async function fetchData() {
         try {
             setLoading(true)
             const response = await api.get('/summary')
             console.log(response.data)
             setSummary(response.data)
-        } catch(error){
+        } catch (error) {
             Alert.alert('Ops', 'Não foi possível carregar o sumário de hábitos.')
             console.log(error);
-        } finally{
+        } finally {
             setLoading(false)
         }
     }
@@ -46,8 +46,8 @@ export function Home() {
         fetchData();
     }, []));
 
-    if(loading){
-        return(
+    if (loading) {
+        return (
             <Loading />
         )
     }
@@ -70,42 +70,42 @@ export function Home() {
                     ))
                 }
             </View>
-            <ScrollView 
+            <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 100 }}
             >
                 {
                     summary &&
                     <View className="flex-row flex-wrap">
-                    {
-                        datesFromYearStart.map(date => {
-                            const dayWithHabits = summary.find(day => {
-                                return dayjs(date).isSame(day.date, 'day')
+                        {
+                            datesFromYearStart.map(date => {
+                                const dayWithHabits = summary.find(day => {
+                                    return dayjs(date).isSame(day.date, 'day')
+                                })
+                                return (
+                                    <HabitDay
+                                        key={date.toISOString()}
+                                        date={date}
+                                        amountOfHabits={dayWithHabits?.amount}
+                                        amountCompleted={dayWithHabits?.completed}
+                                        onPress={() => navigate('habit', { date: date.toISOString() })}
+                                    />
+                                )
                             })
-                            return (
-                                <HabitDay
-                                    key={date.toISOString()}
-                                    date={date}
-                                    amountOfHabits={dayWithHabits?.amount}
-                                    amountCompleted={dayWithHabits?.completed}
-                                    onPress={() => navigate('habit', { date: date.toISOString() })}
-                                />
-                            )
-                        })
-                    }
+                        }
 
-                    {
-                        amountDaysToFill > 0 && Array
-                            .from({ length: amountDaysToFill })
-                            .map((_, i) => (
-                                <View
-                                    key={i}
-                                    className="bg-zinc-900 rounded-lg border-2 m-1 border-zinc-800 opacity-40"
-                                    style={{ width: DAY_SIZE, height: DAY_SIZE }}
-                                />
-                            ))
-                    }
-                </View>
+                        {
+                            amountDaysToFill > 0 && Array
+                                .from({ length: amountDaysToFill })
+                                .map((_, i) => (
+                                    <View
+                                        key={i}
+                                        className="bg-zinc-900 rounded-lg border-2 m-1 border-zinc-800 opacity-40"
+                                        style={{ width: DAY_SIZE, height: DAY_SIZE }}
+                                    />
+                                ))
+                        }
+                    </View>
                 }
             </ScrollView>
 

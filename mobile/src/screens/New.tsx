@@ -11,29 +11,29 @@ const availableWeekDays = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-F
 
 export function New() {
     const [title, setTitle] = useState('')
-    const [ weekDays, setWeekDays ] = useState<number[]>([]);
+    const [weekDays, setWeekDays] = useState<number[]>([]);
 
-    function handleToggleWeekDay(weekDayIndex: number){
-        if(weekDays.includes(weekDayIndex)){
+    function handleToggleWeekDay(weekDayIndex: number) {
+        if (weekDays.includes(weekDayIndex)) {
             setWeekDays(prevState => prevState.filter(weekDay => weekDay !== weekDayIndex));
-        }else{
+        } else {
             setWeekDays(prevState => [...prevState, weekDayIndex]);
         }
     }
 
     async function handleCreateNewHabit() {
-        try{
-            if(!title.trim() || weekDays.length === 0){
+        try {
+            if (!title.trim() || weekDays.length === 0) {
                 return Alert.alert('Erro ao criar', 'Informe o nome do hábito e escolha a periodicidade.')
             }
 
-            await api.post('/habits', {title, weekDays});
+            await api.post('/habits', { title, weekDays });
 
             setTitle('')
             setWeekDays([]);
 
             Alert.alert('Novo hábito', 'Hábito criado com sucesso!')
-        }catch(error){
+        } catch (error) {
             console.log(error);
             Alert.alert('Ops', 'Não foi possível criar o novo hábito.');
         }
@@ -41,7 +41,7 @@ export function New() {
 
     return (
         <View className="flex-1 bg-background px-8 pt-16">
-            <ScrollView 
+            <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 100 }}
             >
